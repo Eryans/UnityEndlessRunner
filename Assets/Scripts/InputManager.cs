@@ -9,7 +9,7 @@ public class InputManager : MonoBehaviour
     public event EventHandler OnJumpAction;
     public event EventHandler OnRestartAction;
 
-    private void Awake()
+    private void Start()
     {
         gameInputs = new();
         gameInputs.Player.Enable();

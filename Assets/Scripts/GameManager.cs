@@ -27,8 +27,4 @@ public class GameManager : MonoBehaviour
         allowGameRestart = true;
     }
 
-    void Update()
-    {
-
-    }
 }
