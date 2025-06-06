@@ -236,7 +236,7 @@ MonoBehaviour:
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
   m_RenderPostProcessing: 1
-  m_Antialiasing: 0
+  m_Antialiasing: 1
   m_AntialiasingQuality: 2
   m_StopNaN: 0
   m_Dithering: 0
@@ -953,6 +953,7 @@ MonoBehaviour:
   - {fileID: 3426196890453421647, guid: 44301ab4a9deecb12a5c08af56b9530a, type: 3}
   - {fileID: 8795389151121751051, guid: 72a3398807fc9f33fa05395cd50d6806, type: 3}
   - {fileID: 8449319911998592617, guid: 8fefde40a15ec6f868300f7af02902f0, type: 3}
+  - {fileID: 189168376930847256, guid: 08d3d06d22f20c424a6943fdf83f91e3, type: 3}
   spawnTimeRate: 2
 --- !u!4 &1427434796
 Transform:

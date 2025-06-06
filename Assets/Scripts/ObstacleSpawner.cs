@@ -21,7 +21,21 @@ public class ObstacleSpawner : MonoBehaviour
     private void SpawnObstacle()
     {
         int randomIndex = UnityEngine.Random.Range(0, obstacles.Length);
-        Instantiate(obstacles[randomIndex], transform.position + (Vector3.up * UnityEngine.Random.Range(1, 5)), transform.rotation);
+        int randomObstacleAmountToSpawn = UnityEngine.Random.Range(1, 4);
+        int heightOffset = 2;
+        int randomSkip = UnityEngine.Random.Range(0, randomObstacleAmountToSpawn * 2);
+        for (int i = 0; i < randomObstacleAmountToSpawn; i++)
+        {
+            if (randomObstacleAmountToSpawn == 1)
+            {
+                Instantiate(obstacles[randomIndex], transform.position + (Vector3.up * UnityEngine.Random.Range(0, 5)), transform.rotation);
+            }
+            else
+            {
+                if (randomSkip == i) return;
+                Instantiate(obstacles[randomIndex], transform.position + (Vector3.up * (i * heightOffset)), transform.rotation);
+            }
+        }
     }
 
     void Update()
