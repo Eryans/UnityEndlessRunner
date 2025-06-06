@@ -1,4 +1,5 @@
 using System;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,7 +8,10 @@ public class Player : MonoBehaviour
     [SerializeField] private float speed = 15f;
     [SerializeField] private float jumpForce = 15f;
 
+    [SerializeField] private float maxJetpackTime = 5f;
     [SerializeField] private InputManager inputManager;
+
+    private float jetpackTimeleft;
     private Rigidbody rb;
     private BoxCollider boxCollider;
     private bool isAlive = true;
@@ -29,13 +33,17 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         boxCollider = GetComponent<BoxCollider>();
         inputManager.OnJumpAction += OnJump;
+        jetpackTimeleft = maxJetpackTime;
     }
 
 
     private void OnJump(object sender, EventArgs e)
     {
-        if (isAlive)
+        if (isAlive && Mathf.Round(jetpackTimeleft) > 0)
+        {
+            jetpackTimeleft -= Time.deltaTime;
             rb.AddForce(Vector3.up * (jumpForce * Time.fixedDeltaTime));
+        }
     }
     private void OnCollisionEnter(Collision collision)
     {
@@ -45,12 +53,29 @@ public class Player : MonoBehaviour
             OnObstacleCollision?.Invoke(this, EventArgs.Empty);
         }
     }
-
     void FixedUpdate()
     {
+        Debug.Log(jetpackTimeleft);
         if (isAlive)
         {
             HandleMovement();
+            HandleJetpack();
+        }
+    }
+    private void HandleJetpack()
+    {
+        jetpackTimeleft = Mathf.Clamp(jetpackTimeleft, 0, maxJetpackTime);
+        Vector3 halfExtends = boxCollider.bounds.extents;
+        halfExtends.y = .025f;
+        bool isOnGround = Physics.BoxCast(transform.position,
+         halfExtends,
+         Vector3.down,
+         transform.rotation,
+         boxCollider.bounds.extents.y,
+         LayerMask.GetMask("floor"));
+        if (isOnGround)
+        {
+            jetpackTimeleft += Time.deltaTime;
         }
     }
     private void HandleMovement()
@@ -63,6 +88,5 @@ public class Player : MonoBehaviour
             speed * Time.fixedDeltaTime);
         if (canMove)
             rb.MovePosition(transform.position + speed * Time.fixedDeltaTime * direction);
-
     }
 }
