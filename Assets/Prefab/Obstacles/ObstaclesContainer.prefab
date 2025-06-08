@@ -48,3 +48,5 @@ MonoBehaviour:
   minOffsetX: 0
   maxOffsetX: -1
   allowMirrorX: 0
+  oneInstanceOnly: 1
+  preventYAxisRandom: 1

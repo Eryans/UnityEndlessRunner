@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField] private bool DEBUG_GODMODE = false;
     [SerializeField] private float speed = 15f;
     [SerializeField] private float jumpForce = 15f;
 
@@ -42,12 +43,12 @@ public class Player : MonoBehaviour
         if (isAlive && Mathf.Round(jetpackTimeleft) > 0)
         {
             jetpackTimeleft -= Time.deltaTime;
-            rb.AddForce(Vector3.up * (jumpForce * Time.fixedDeltaTime));
+            rb.linearVelocity += Vector3.up * (jumpForce * Time.fixedDeltaTime);
         }
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.transform.TryGetComponent(out Obstacle obstacle))
+        if (collision.transform.TryGetComponent(out Obstacle obstacle) && !DEBUG_GODMODE)
         {
             isAlive = false;
             OnObstacleCollision?.Invoke(this, EventArgs.Empty);
@@ -55,7 +56,6 @@ public class Player : MonoBehaviour
     }
     void FixedUpdate()
     {
-        Debug.Log(jetpackTimeleft);
         if (isAlive)
         {
             HandleMovement();
