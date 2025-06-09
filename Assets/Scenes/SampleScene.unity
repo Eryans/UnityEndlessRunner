@@ -728,7 +728,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputManager: {fileID: 687666695}
   gravityOveride: {x: 0, y: -15, z: 0}
-  randomEventTimerMax: 5
+  randomEventTimerMin: 20
+  randomEventTimerMax: 60
   GlobalObstacleSpeed: 40
 --- !u!4 &571790471
 Transform:
@@ -1185,6 +1186,7 @@ MonoBehaviour:
   - {fileID: 6736211696081170978, guid: 510b84242517fe0fab4e28af5adde905, type: 3}
   - {fileID: 2556741363531724276, guid: a94b953e02ba3950fab1ce947dd54d81, type: 3}
   - {fileID: 3314727267989203950, guid: e4c8dcbd35b50963a888ad9997c4227c, type: 3}
+  - {fileID: 8193170337373937734, guid: d8bdc443fa97f3493a46d61b0943d1aa, type: 3}
   spawnTimeRate: 2
 --- !u!4 &1427434796
 Transform:

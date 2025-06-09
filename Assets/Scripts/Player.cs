@@ -69,20 +69,28 @@ public class Player : MonoBehaviour
         if (isAlive)
         {
             HandleMovement();
-            // HandleJetpack();
+            CheckIfFloorIsLava();
         }
     }
-    // private void HandleJetpack()
-    // {
-    //     Vector3 halfExtends = boxCollider.bounds.extents;
-    //     halfExtends.y = .025f;
-    //     bool isOnGround = Physics.BoxCast(transform.position,
-    //      halfExtends,
-    //      Vector3.down,
-    //      transform.rotation,
-    //      boxCollider.bounds.extents.y,
-    //      LayerMask.GetMask("floor"));
-    // }
+    private void CheckIfFloorIsLava()
+    {
+        Vector3 halfExtends = boxCollider.bounds.extents;
+        halfExtends.y = .025f;
+        bool isOnGround = Physics.BoxCast(transform.position,
+         halfExtends,
+         Vector3.down,
+         out RaycastHit hitInfo,
+         transform.rotation,
+         boxCollider.bounds.extents.y,
+         LayerMask.GetMask("floor"));
+        if (isOnGround && hitInfo.transform.TryGetComponent(out Floor floor))
+        {
+            if (floor.CurrentState == Floor.FloorState.IsLava)
+            {
+                Kill();
+            }
+        }
+    }
     private void HandleMovement()
     {
         Vector3 direction = new(inputManager.GetMovementHorizontal(), 0, 0);
