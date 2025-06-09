@@ -728,6 +728,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputManager: {fileID: 687666695}
   gravityOveride: {x: 0, y: -15, z: 0}
+  randomEventTimerMax: 5
   GlobalObstacleSpeed: 40
 --- !u!4 &571790471
 Transform:
@@ -883,6 +884,7 @@ GameObject:
   - component: {fileID: 1220690857}
   - component: {fileID: 1220690856}
   - component: {fileID: 1220690855}
+  - component: {fileID: 1220690859}
   m_Layer: 3
   m_Name: Floor
   m_TagString: Untagged
@@ -979,6 +981,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1220690859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1220690854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e708c886a50accba9a73668e0008d11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  walkableMaterial: {fileID: 2100000, guid: bb90018fe1f7cacbc842dcc8dcd4b498, type: 2}
+  isLavaMaterial: {fileID: 2100000, guid: b1cd883170872439a92dd2fe735cb806, type: 2}
 --- !u!1 &1305162192
 GameObject:
   m_ObjectHideFlags: 0
@@ -11638,7 +11654,7 @@ PrefabInstance:
       objectReference: {fileID: 513773672}
     - target: {fileID: 1559327591688479485, guid: c585f524c4faad9ef8baf2be693cace6, type: 3}
       propertyPath: m_VersionIndex
-      value: 1813
+      value: 1816
       objectReference: {fileID: 0}
     - target: {fileID: 2108164811558690509, guid: c585f524c4faad9ef8baf2be693cace6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -11698,7 +11714,7 @@ PrefabInstance:
       objectReference: {fileID: 1437137974}
     - target: {fileID: 4138718422876681044, guid: c585f524c4faad9ef8baf2be693cace6, type: 3}
       propertyPath: m_VersionIndex
-      value: 1795
+      value: 1798
       objectReference: {fileID: 0}
     - target: {fileID: 6980765845676788568, guid: c585f524c4faad9ef8baf2be693cace6, type: 3}
       propertyPath: m_Mesh

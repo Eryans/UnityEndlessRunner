@@ -6,11 +6,11 @@ public class UI : MonoBehaviour
     private Transform gameOverPanel;
     void Start()
     {
-        Player.Instance.OnObstacleCollision += ObstacleHitPlayer;
+        Player.Instance.OnPlayerDeath += OnPlayerDeath;
         gameOverPanel = transform.Find("GameOverPanel");
         gameOverPanel.gameObject.SetActive(false);
     }
-    private void ObstacleHitPlayer(object sender, EventArgs e)
+    private void OnPlayerDeath(object sender, EventArgs e)
     {
         gameOverPanel.gameObject.SetActive(true);
     }

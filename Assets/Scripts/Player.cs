@@ -16,7 +16,7 @@ public class Player : MonoBehaviour
     private bool isAlive = true;
 
     public static Player Instance { get; private set; }
-    public event EventHandler OnObstacleCollision;
+    public event EventHandler OnPlayerDeath;
 
     private void Awake()
     {
@@ -44,11 +44,25 @@ public class Player : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.transform.TryGetComponent(out Obstacle obstacle) && !DEBUG_GODMODE)
+        if (!DEBUG_GODMODE)
         {
-            isAlive = false;
-            OnObstacleCollision?.Invoke(this, EventArgs.Empty);
+            if (collision.transform.TryGetComponent(out Obstacle obstacle))
+            {
+                Kill();
+            }
+            if (collision.transform.TryGetComponent(out Floor floor))
+            {
+                if (floor.CurrentState == Floor.FloorState.IsLava)
+                {
+                    Kill();
+                }
+            }
         }
+    }
+    public void Kill()
+    {
+        isAlive = false;
+        OnPlayerDeath?.Invoke(this, EventArgs.Empty);
     }
     void FixedUpdate()
     {
