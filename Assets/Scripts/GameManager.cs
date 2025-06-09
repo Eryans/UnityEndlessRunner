@@ -6,8 +6,17 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private InputManager inputManager;
     [SerializeField] private Vector3 gravityOveride = new();
+    public float GlobalObstacleSpeed = 50f;
     private bool allowGameRestart = false;
-
+    public static GameManager Instance { get; private set; }
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Debug.Log("ERROR Game manager instance already exist !");
+        }
+        Instance = this;
+    }
     void Start()
     {
         Player.Instance.OnObstacleCollision += ObstacleHitPlayer;

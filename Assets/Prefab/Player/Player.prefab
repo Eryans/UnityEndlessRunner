@@ -125,7 +125,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DEBUG_GODMODE: 1
   speed: 7
-  jumpForce: 200
+  jumpForce: 250
   maxJetpackTime: 5
   inputManager: {fileID: 0}
 --- !u!54 &1050485538478647480

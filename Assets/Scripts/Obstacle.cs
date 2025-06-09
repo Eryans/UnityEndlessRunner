@@ -8,5 +8,4 @@ public class Obstacle : MonoBehaviour
         return transform.parent.gameObject;
     }
 
-
 }

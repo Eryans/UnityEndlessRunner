@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class ObstaclesContainer : MonoBehaviour
 {
-    [SerializeField] private float speed = 25f;
     [SerializeField] private int minOffsetX = 0;
     [SerializeField] private int maxOffsetX = -1;
     [SerializeField, Tooltip("If true, obstacle has 50% chance of being flipped")]
@@ -27,6 +26,6 @@ public class ObstaclesContainer : MonoBehaviour
 
     void Update()
     {
-        transform.position += speed * Time.deltaTime * Vector3.back;
+        transform.position += GameManager.Instance.GlobalObstacleSpeed * Time.deltaTime * Vector3.back;
     }
 }

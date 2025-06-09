@@ -728,6 +728,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputManager: {fileID: 687666695}
   gravityOveride: {x: 0, y: -15, z: 0}
+  GlobalObstacleSpeed: 40
 --- !u!4 &571790471
 Transform:
   m_ObjectHideFlags: 0
@@ -933,7 +934,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: bb90018fe1f7cacbc842dcc8dcd4b498, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1167,6 +1168,7 @@ MonoBehaviour:
   - {fileID: 3304526003075082277, guid: b41ea91d2b9c8575da45ad2b3e1315d6, type: 3}
   - {fileID: 6736211696081170978, guid: 510b84242517fe0fab4e28af5adde905, type: 3}
   - {fileID: 2556741363531724276, guid: a94b953e02ba3950fab1ce947dd54d81, type: 3}
+  - {fileID: 3314727267989203950, guid: e4c8dcbd35b50963a888ad9997c4227c, type: 3}
   spawnTimeRate: 2
 --- !u!4 &1427434796
 Transform:
@@ -11636,7 +11638,7 @@ PrefabInstance:
       objectReference: {fileID: 513773672}
     - target: {fileID: 1559327591688479485, guid: c585f524c4faad9ef8baf2be693cace6, type: 3}
       propertyPath: m_VersionIndex
-      value: 1810
+      value: 1813
       objectReference: {fileID: 0}
     - target: {fileID: 2108164811558690509, guid: c585f524c4faad9ef8baf2be693cace6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -11696,7 +11698,7 @@ PrefabInstance:
       objectReference: {fileID: 1437137974}
     - target: {fileID: 4138718422876681044, guid: c585f524c4faad9ef8baf2be693cace6, type: 3}
       propertyPath: m_VersionIndex
-      value: 1792
+      value: 1795
       objectReference: {fileID: 0}
     - target: {fileID: 6980765845676788568, guid: c585f524c4faad9ef8baf2be693cace6, type: 3}
       propertyPath: m_Mesh
@@ -11708,7 +11710,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6994005441407645996, guid: c585f524c4faad9ef8baf2be693cace6, type: 3}
       propertyPath: jumpForce
-      value: 10
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 6994005441407645996, guid: c585f524c4faad9ef8baf2be693cace6, type: 3}
       propertyPath: inputManager
@@ -11716,7 +11718,11 @@ PrefabInstance:
       objectReference: {fileID: 687666695}
     - target: {fileID: 6994005441407645996, guid: c585f524c4faad9ef8baf2be693cace6, type: 3}
       propertyPath: DEBUG_GODMODE
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6994005441407645996, guid: c585f524c4faad9ef8baf2be693cace6, type: 3}
+      propertyPath: maxJetpackTime
+      value: 99999
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
