@@ -9,10 +9,8 @@ public class Player : MonoBehaviour
     [SerializeField] private float speed = 15f;
     [SerializeField] private float jumpForce = 15f;
 
-    [SerializeField] private float maxJetpackTime = 5f;
     [SerializeField] private InputManager inputManager;
 
-    private float jetpackTimeleft;
     private Rigidbody rb;
     private BoxCollider boxCollider;
     private bool isAlive = true;
@@ -34,15 +32,13 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         boxCollider = GetComponent<BoxCollider>();
         inputManager.OnJumpAction += OnJump;
-        jetpackTimeleft = maxJetpackTime;
     }
 
 
     private void OnJump(object sender, EventArgs e)
     {
-        if (isAlive && Mathf.Round(jetpackTimeleft) > 0)
+        if (isAlive)
         {
-            jetpackTimeleft -= Time.deltaTime;
             rb.linearVelocity += Vector3.up * (jumpForce * Time.fixedDeltaTime);
         }
     }
@@ -59,25 +55,20 @@ public class Player : MonoBehaviour
         if (isAlive)
         {
             HandleMovement();
-            HandleJetpack();
+            // HandleJetpack();
         }
     }
-    private void HandleJetpack()
-    {
-        jetpackTimeleft = Mathf.Clamp(jetpackTimeleft, 0, maxJetpackTime);
-        Vector3 halfExtends = boxCollider.bounds.extents;
-        halfExtends.y = .025f;
-        bool isOnGround = Physics.BoxCast(transform.position,
-         halfExtends,
-         Vector3.down,
-         transform.rotation,
-         boxCollider.bounds.extents.y,
-         LayerMask.GetMask("floor"));
-        if (isOnGround)
-        {
-            jetpackTimeleft += Time.deltaTime;
-        }
-    }
+    // private void HandleJetpack()
+    // {
+    //     Vector3 halfExtends = boxCollider.bounds.extents;
+    //     halfExtends.y = .025f;
+    //     bool isOnGround = Physics.BoxCast(transform.position,
+    //      halfExtends,
+    //      Vector3.down,
+    //      transform.rotation,
+    //      boxCollider.bounds.extents.y,
+    //      LayerMask.GetMask("floor"));
+    // }
     private void HandleMovement()
     {
         Vector3 direction = new(inputManager.GetMovementHorizontal(), 0, 0);
