@@ -8,11 +8,23 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Vector3 gravityOveride = new();
     [SerializeField] private float randomEventTimerMin = 20;
     [SerializeField] private float randomEventTimerMax = 60;
+    [SerializeField] private float eventWarningTimeTrigger = 3f;
+    [SerializeField] private float eventDuration = 10f;
+
     private float randomEventTimerTimeleft;
-    public float GlobalObstacleSpeed = 50f;
     private bool allowGameRestart = false;
+    private bool eventInProgress = false;
+    public float GlobalObstacleSpeed { get; private set; } = 50f;
+
+    public event EventHandler OnRandomEventLaunch;
+    public event EventHandler OnRandomEventEnd;
+    public event EventHandler<OnEventBeginSoonArgs> OnEventBeginSoon;
+    public class OnEventBeginSoonArgs : EventArgs
+    {
+        public float TimeLeft;
+    }
+
     public static GameManager Instance { get; private set; }
-    public event EventHandler OnRandomEvent;
 
     private void Awake()
     {
@@ -21,7 +33,7 @@ public class GameManager : MonoBehaviour
             Debug.LogError("ERROR Game manager instance already exist !");
         }
         Instance = this;
-        randomEventTimerTimeleft = SetTimer();
+        randomEventTimerTimeleft = SetRandomEventTimer();
     }
     void Start()
     {
@@ -52,12 +64,26 @@ public class GameManager : MonoBehaviour
         randomEventTimerTimeleft -= Time.deltaTime;
         if (randomEventTimerTimeleft <= 0)
         {
-            OnRandomEvent?.Invoke(this, EventArgs.Empty);
-            randomEventTimerTimeleft = SetTimer();
+            if (eventInProgress)
+            {
+                eventInProgress = false;
+                OnRandomEventEnd?.Invoke(this, EventArgs.Empty);
+                randomEventTimerTimeleft = SetRandomEventTimer();
+            }
+            else
+            {
+                eventInProgress = true;
+                OnRandomEventLaunch?.Invoke(this, EventArgs.Empty);
+                randomEventTimerTimeleft = eventDuration;
+            }
+        }
+        if (randomEventTimerTimeleft <= eventWarningTimeTrigger && !eventInProgress)
+        {
+            OnEventBeginSoon(this, new OnEventBeginSoonArgs { TimeLeft = randomEventTimerTimeleft });
         }
     }
 
-    private float SetTimer()
+    private float SetRandomEventTimer()
     {
         return UnityEngine.Random.Range(randomEventTimerMin, randomEventTimerMax + 1);
     }

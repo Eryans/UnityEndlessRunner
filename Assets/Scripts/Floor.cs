@@ -21,12 +21,18 @@ public class Floor : MonoBehaviour
     }
     private void Start()
     {
-        GameManager.Instance.OnRandomEvent += OnGameManagerRandomEvent;
+        GameManager.Instance.OnRandomEventLaunch += OnGameManagerRandomEventStart;
+        GameManager.Instance.OnRandomEventEnd += OnGameManagerRandomEventEnd;
     }
 
-    private void OnGameManagerRandomEvent(object sender, EventArgs e)
+    private void OnGameManagerRandomEventEnd(object sender, EventArgs e)
     {
-        ChangeFloorState(CurrentState == FloorState.Walkable ? FloorState.IsLava : FloorState.Walkable);
+        ChangeFloorState(FloorState.Walkable);
+    }
+
+    private void OnGameManagerRandomEventStart(object sender, EventArgs e)
+    {
+        ChangeFloorState(FloorState.IsLava);
     }
 
     private void ChangeFloorState(FloorState newState)
