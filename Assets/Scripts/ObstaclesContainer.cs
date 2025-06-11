@@ -11,21 +11,30 @@ public class ObstaclesContainer : MonoBehaviour
     public bool OneInstanceOnly => oneInstanceOnly;
     [SerializeField, Tooltip("If true, prevents obstacle spawner to change Y axis")]
     private bool preventYAxisRandom = true;
-    public bool PreventYAxisRandom => preventYAxisRandom;
-
+    [SerializeField]
+    private bool isRotating = false;
+    [SerializeField]
+    private float rotationSpeed = 5f;
+    private Transform childObstacle;
     void Start()
     {
-        Vector3 pos = new(Random.Range(minOffsetX, maxOffsetX + 1), 0, 0);
+        Vector3 pos = new Vector3(Random.Range(minOffsetX, maxOffsetX + 1), 0, 0)
+        + (preventYAxisRandom ? Vector3.zero : Vector3.up * Random.Range(0, 5));
         transform.position += pos;
         if (allowMirrorX)
         {
             if (Random.Range(0, 2) == 0) return; ;
             transform.rotation = Quaternion.Euler(0, 180, 0);
         }
+        childObstacle = transform.GetChild(0);
     }
 
     void Update()
     {
         transform.position += GameManager.Instance.GlobalObstacleSpeed * Time.deltaTime * Vector3.back;
+        if (isRotating)
+        {
+            childObstacle.transform.Rotate(rotationSpeed * Time.deltaTime * Vector3.back);
+        }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -14,17 +15,34 @@ public class GameManager : MonoBehaviour
     private float randomEventTimerTimeleft;
     private bool allowGameRestart = false;
     private bool eventInProgress = false;
+    private float score = 0;
+    private readonly string savePath = Application.dataPath + "/save.json";
+
     public float GlobalObstacleSpeed { get; private set; } = 50f;
+    public int HighScore { get; private set; } = 0;
 
     public event EventHandler OnRandomEventLaunch;
     public event EventHandler OnRandomEventEnd;
+    public event EventHandler<OnScoreChangeEventArgs> OnScoreChange;
     public event EventHandler<OnEventBeginSoonArgs> OnEventBeginSoon;
+
+    public static GameManager Instance { get; private set; }
+
+
+    public class OnScoreChangeEventArgs
+    {
+        public int score;
+    }
+
     public class OnEventBeginSoonArgs : EventArgs
     {
         public float TimeLeft;
     }
-
-    public static GameManager Instance { get; private set; }
+    [Serializable]
+    public class PersistentData
+    {
+        public int HighScore;
+    }
 
     private void Awake()
     {
@@ -34,10 +52,11 @@ public class GameManager : MonoBehaviour
         }
         Instance = this;
         randomEventTimerTimeleft = SetRandomEventTimer();
+        LoadPersistentData();
     }
     void Start()
     {
-        Player.Instance.OnPlayerDeath += ObstacleHitPlayer;
+        Player.Instance.OnPlayerDeath += OnPlayerDeath;
         inputManager.OnRestartAction += OnRestart;
         if (gravityOveride != Vector3.zero)
         {
@@ -54,32 +73,56 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void ObstacleHitPlayer(object sender, EventArgs e)
+    private void OnPlayerDeath(object sender, EventArgs e)
     {
         allowGameRestart = true;
+        SavePersistentData((int)score);
     }
 
+    private void SavePersistentData(int score)
+    {
+        PersistentData data = new()
+        {
+            HighScore = score
+        };
+        string json = JsonUtility.ToJson(data);
+        File.WriteAllText(savePath, json);
+    }
+    private void LoadPersistentData()
+    {
+        if (File.Exists(savePath))
+        {
+            string savedData = File.ReadAllText(savePath);
+            PersistentData parsedJson = JsonUtility.FromJson<PersistentData>(savedData);
+            HighScore = parsedJson.HighScore;
+        }
+    }
     private void Update()
     {
-        randomEventTimerTimeleft -= Time.deltaTime;
-        if (randomEventTimerTimeleft <= 0)
+        if (Player.Instance.IsAlive)
         {
-            if (eventInProgress)
+            randomEventTimerTimeleft -= Time.deltaTime;
+            score += Time.deltaTime;
+            OnScoreChange?.Invoke(this, new OnScoreChangeEventArgs { score = (int)score });
+            if (randomEventTimerTimeleft <= 0)
             {
-                eventInProgress = false;
-                OnRandomEventEnd?.Invoke(this, EventArgs.Empty);
-                randomEventTimerTimeleft = SetRandomEventTimer();
+                if (eventInProgress)
+                {
+                    eventInProgress = false;
+                    OnRandomEventEnd?.Invoke(this, EventArgs.Empty);
+                    randomEventTimerTimeleft = SetRandomEventTimer();
+                }
+                else
+                {
+                    eventInProgress = true;
+                    OnRandomEventLaunch?.Invoke(this, EventArgs.Empty);
+                    randomEventTimerTimeleft = eventDuration;
+                }
             }
-            else
+            if (randomEventTimerTimeleft <= eventWarningTimeTrigger && !eventInProgress)
             {
-                eventInProgress = true;
-                OnRandomEventLaunch?.Invoke(this, EventArgs.Empty);
-                randomEventTimerTimeleft = eventDuration;
+                OnEventBeginSoon(this, new OnEventBeginSoonArgs { TimeLeft = randomEventTimerTimeleft });
             }
-        }
-        if (randomEventTimerTimeleft <= eventWarningTimeTrigger && !eventInProgress)
-        {
-            OnEventBeginSoon(this, new OnEventBeginSoonArgs { TimeLeft = randomEventTimerTimeleft });
         }
     }
 

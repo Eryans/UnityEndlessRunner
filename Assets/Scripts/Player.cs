@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
 
     private Rigidbody rb;
     private BoxCollider boxCollider;
-    private bool isAlive = true;
+    public bool IsAlive { get; private set; } = true;
 
     public static Player Instance { get; private set; }
     public event EventHandler OnPlayerDeath;
@@ -37,7 +37,7 @@ public class Player : MonoBehaviour
 
     private void OnJump(object sender, EventArgs e)
     {
-        if (isAlive)
+        if (IsAlive)
         {
             rb.linearVelocity += Vector3.up * (jumpForce * Time.fixedDeltaTime);
         }
@@ -61,12 +61,12 @@ public class Player : MonoBehaviour
     }
     public void Kill()
     {
-        isAlive = false;
+        IsAlive = false;
         OnPlayerDeath?.Invoke(this, EventArgs.Empty);
     }
     void FixedUpdate()
     {
-        if (isAlive)
+        if (IsAlive)
         {
             HandleMovement();
             CheckIfFloorIsLava();

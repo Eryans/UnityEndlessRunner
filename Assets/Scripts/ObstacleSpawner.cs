@@ -4,15 +4,19 @@ using UnityEngine;
 public class ObstacleSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject[] obstacles;
-    [SerializeField] private float spawnTimeRate;
+    [SerializeField] private float spawnTimeRateMin = 2;
+    [SerializeField] private float spawnTimeRateMax = 15;
     private float timeLeft;
     private event Action timeout;
     void Start()
     {
-        timeLeft = spawnTimeRate;
+        timeLeft = GetSpawnTimeRate();
         timeout += OnTimeout;
     }
-
+    private float GetSpawnTimeRate()
+    {
+        return UnityEngine.Random.Range(spawnTimeRateMin, spawnTimeRateMax + 1);
+    }
     private void OnTimeout()
     {
         SpawnObstacle();
@@ -46,11 +50,10 @@ public class ObstacleSpawner : MonoBehaviour
         // }
         int randomIndex = UnityEngine.Random.Range(0, obstacles.Length);
         obstacles[randomIndex].transform.TryGetComponent(out ObstaclesContainer currentObstacleContainer);
-        Vector3 yOffset = currentObstacleContainer.PreventYAxisRandom ? Vector3.zero : Vector3.up * UnityEngine.Random.Range(0, 5);
         if (currentObstacleContainer.OneInstanceOnly)
         {
             Instantiate(currentObstacleContainer.gameObject,
-             transform.position + yOffset
+             transform.position
             , transform.rotation);
             return;
         }
@@ -61,7 +64,7 @@ public class ObstacleSpawner : MonoBehaviour
         timeLeft -= Time.deltaTime;
         if (timeLeft <= 0)
         {
-            timeLeft = spawnTimeRate;
+            timeLeft = GetSpawnTimeRate();
             timeout?.Invoke();
         }
     }
