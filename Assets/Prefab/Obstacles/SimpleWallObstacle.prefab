@@ -229,6 +229,10 @@ PrefabInstance:
       propertyPath: 'm_SelectedVertices.Array.data[3]'
       value: 19
       objectReference: {fileID: 0}
+    - target: {fileID: 2582706872019832754, guid: 5511bba5c583cad1c8ba99fd90046ad6, type: 3}
+      propertyPath: m_Convex
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3058234543546607869, guid: 5511bba5c583cad1c8ba99fd90046ad6, type: 3}
       propertyPath: m_LocalScale.y
       value: 1

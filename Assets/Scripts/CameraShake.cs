@@ -9,6 +9,7 @@ public class CameraShake : MonoBehaviour
     void Start()
     {
         originalPos = transform.position;
+        Player.Instance.OnPlayerDeath += (e, o) => { shakeAmount = 0; };
     }
 
     void Update()

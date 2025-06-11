@@ -12,6 +12,7 @@ public class ObstacleSpawner : MonoBehaviour
     {
         timeLeft = GetSpawnTimeRate();
         timeout += OnTimeout;
+        Player.Instance.OnPlayerDeath += (e, o) => { gameObject.SetActive(false); };
     }
     private float GetSpawnTimeRate()
     {

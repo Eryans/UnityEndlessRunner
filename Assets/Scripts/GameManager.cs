@@ -75,7 +75,10 @@ public class GameManager : MonoBehaviour
     private void OnPlayerDeath(object sender, EventArgs e)
     {
         allowGameRestart = true;
-        SavePersistentData((int)score);
+        if (score > HighScore)
+        {
+            SavePersistentData((int)score);
+        }
     }
 
     private void SavePersistentData(int score)
@@ -124,6 +127,10 @@ public class GameManager : MonoBehaviour
             {
                 OnEventBeginSoon(this, new OnEventBeginSoonArgs { TimeLeft = randomEventTimerTimeleft });
             }
+        }
+        else
+        {
+            GlobalObstacleSpeed = Mathf.Lerp(GlobalObstacleSpeed, 0, Time.deltaTime);
         }
     }
 
