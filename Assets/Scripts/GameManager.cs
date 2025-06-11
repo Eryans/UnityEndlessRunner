@@ -16,7 +16,6 @@ public class GameManager : MonoBehaviour
     private bool allowGameRestart = false;
     private bool eventInProgress = false;
     private float score = 0;
-    private readonly string savePath = Application.dataPath + "/save.json";
 
     public float GlobalObstacleSpeed { get; private set; } = 50f;
     public int HighScore { get; private set; } = 0;
@@ -86,15 +85,17 @@ public class GameManager : MonoBehaviour
             HighScore = score
         };
         string json = JsonUtility.ToJson(data);
-        File.WriteAllText(savePath, json);
+        SaveSystem.Save(json);
     }
     private void LoadPersistentData()
     {
-        if (File.Exists(savePath))
         {
-            string savedData = File.ReadAllText(savePath);
-            PersistentData parsedJson = JsonUtility.FromJson<PersistentData>(savedData);
-            HighScore = parsedJson.HighScore;
+            string savedData = SaveSystem.Load();
+            if (savedData != null)
+            {
+                PersistentData parsedJson = JsonUtility.FromJson<PersistentData>(savedData);
+                HighScore = parsedJson.HighScore;
+            }
         }
     }
     private void Update()
